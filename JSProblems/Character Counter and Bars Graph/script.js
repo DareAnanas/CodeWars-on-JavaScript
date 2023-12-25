@@ -10,7 +10,10 @@ function countCharsBarGraph(text, barlength) {
         }
     }
     let sorted = Object.entries(dic).sort((pairA, pairB) => {
-        pairB[1] - pairA[1]
+        let value = pairB[1] - pairA[1];
+        if (value != 0)
+            return value;
+        return pairA[0].localeCompare(pairB[0]);
     });
     let maxCharNum = sorted[0][1];
     let result = '';
@@ -18,7 +21,7 @@ function countCharsBarGraph(text, barlength) {
         let bar = Math.floor(e[1] * barlength / maxCharNum);
         result += `${e[0]}:${'#'.repeat(bar)}\n`;
     }
-    return result;
+    return result.slice(0, -1);
 }
 
 console.log(countCharsBarGraph("just a short text", 4));
