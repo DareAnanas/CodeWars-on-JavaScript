@@ -1,0 +1,28 @@
+const matrix = [
+    [ 1, -1, -2, -1, 2],
+    [ 3, -1,  2,  5, 2],
+    [-2, -1, -1, -3, 4],
+    [-3,  0, -5, -1, 2],
+    [ 4, -2,  3,  2, 1]
+];
+
+function multiplyRow(row, n) {
+    return row.map(e => e * n);
+}
+
+Array.prototype.add = function(row) {
+    for (let i = 0; i < this.length; i++) {
+        const e = this[i];
+        this[i] = e + row[i];
+    }
+}
+
+for (let i = 1; i < matrix.length; i++) {
+    let row = multiplyRow(matrix[0], -matrix[i][0]);
+    matrix[i].add(row);
+}
+
+// let I = multiplyRow(matrix[0], -matrix[1][0]);
+// matrix[1].add(I);
+
+console.log(matrix);
