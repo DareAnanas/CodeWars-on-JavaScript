@@ -3,8 +3,12 @@ function generateCombinations(arr, n) {
   
     function combine(currentCombination, start) {
         if (currentCombination.length == n) {
-            result.push([...currentCombination]);
-            return;
+            let comboSum = currentCombination.reduce((acc, value) => {return acc + value},0);
+            let diff = arr.filter(x => !currentCombination.includes(x));
+            let diffSum = diff.reduce((acc, value) => {return acc + value},0);
+            if (comboSum == diffSum) {
+                result = [[...currentCombination], diff];
+            }
         }
     
         for (let i = start; i < arr.length; i++) {
@@ -27,17 +31,21 @@ function createTwoSetsOfEqualSum(n) {
         nums.push(i);
     }
     let comboCount = Math.floor(nums.length / 2);
+    let result = [];
     for (let i = 1; i <= comboCount; i++) {
-        let combinations = generateCombinations(nums, nums.length-i);
-        for (let combination of combinations) {
-            let comboSum = combination.reduce((acc, value) => {return acc + value},0);
-            let diff = nums.filter(x => !combination.includes(x));
-            let diffSum = diff.reduce((acc, value) => {return acc + value},0);
-            if (comboSum == diffSum)
-                return [combination, diff];
-        }
+        result = generateCombinations(nums, nums.length-i);
+        if (result.length != 0) break;
     }
-    return [];
+    return result;
 }
 
+console.log(createTwoSetsOfEqualSum(1));
+console.log(createTwoSetsOfEqualSum(2));
 console.log(createTwoSetsOfEqualSum(3));
+console.log(createTwoSetsOfEqualSum(4));
+console.log(createTwoSetsOfEqualSum(5));
+console.log(createTwoSetsOfEqualSum(6));
+console.log(createTwoSetsOfEqualSum(7));
+console.log(createTwoSetsOfEqualSum(8));
+console.log(createTwoSetsOfEqualSum(9));
+console.log(createTwoSetsOfEqualSum(10));
