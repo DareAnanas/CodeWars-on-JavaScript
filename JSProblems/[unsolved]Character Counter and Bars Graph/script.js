@@ -27,3 +27,5 @@ function countCharsBarGraph(text, barlength) {
 console.log(countCharsBarGraph("just a short text", 4));
 
 console.log(countCharsBarGraph("just a short text", 23));
+
+console.log(countCharsBarGraph("aaazbbbzzfffffzRRrTTkkjjkkkkTtrr", 100));
