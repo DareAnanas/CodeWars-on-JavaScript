@@ -1,42 +1,24 @@
-function generateCombinations(arr, n) {
-    let result = [];
-  
-    function combine(currentCombination, start) {
-        if (currentCombination.length == n) {
-            let comboSum = currentCombination.reduce((acc, value) => {return acc + value},0);
-            let diff = arr.filter(x => !currentCombination.includes(x));
-            let diffSum = diff.reduce((acc, value) => {return acc + value},0);
-            if (comboSum == diffSum) {
-                result = [[...currentCombination], diff];
-            }
-        }
-    
-        for (let i = start; i < arr.length; i++) {
-            currentCombination.push(arr[i]);
-            combine(currentCombination, i + 1);
-            currentCombination.pop();
-        }
+function snakeFill(from, to, a, b) {
+    let i = from;
+    while (i <= to) {
+        a.push(i++);    
+        b.push(i++);
+        b.push(i++);
+        a.push(i++);
     }
-  
-    combine([], 0);
-    return result;
+    return [a, b];
 }
-
 function createTwoSetsOfEqualSum(n) {
-    console.log(n);
-    if (n == 1 || n == 2)
-        return [];
-    let nums = [];
-    for (let i = 1; i <= n; i++) {
-        nums.push(i);
+    let a = [];
+    let b = [];
+    if (n % 4 == 0)
+        return snakeFill(1, n, a, b);
+    if (n % 4 == 3) {
+        a.push(1,2);
+        b.push(3);
+        return snakeFill(4, n, a, b);
     }
-    let comboCount = Math.floor(nums.length / 2);
-    let result = [];
-    for (let i = 1; i <= comboCount; i++) {
-        result = generateCombinations(nums, nums.length-i);
-        if (result.length != 0) break;
-    }
-    return result;
+    return [];
 }
 
 console.log(createTwoSetsOfEqualSum(1));
@@ -49,3 +31,13 @@ console.log(createTwoSetsOfEqualSum(7));
 console.log(createTwoSetsOfEqualSum(8));
 console.log(createTwoSetsOfEqualSum(9));
 console.log(createTwoSetsOfEqualSum(10));
+console.log(createTwoSetsOfEqualSum(11));
+console.log(createTwoSetsOfEqualSum(12));
+console.log(createTwoSetsOfEqualSum(13));
+console.log(createTwoSetsOfEqualSum(14));
+console.log(createTwoSetsOfEqualSum(15));
+console.log(createTwoSetsOfEqualSum(16));
+console.log(createTwoSetsOfEqualSum(17));
+console.log(createTwoSetsOfEqualSum(18));
+console.log(createTwoSetsOfEqualSum(19));
+console.log(createTwoSetsOfEqualSum(20));
