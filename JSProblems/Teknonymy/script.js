@@ -1,5 +1,59 @@
+// function breadthFirstTraversal(root) {
+//     if (!root) {
+//         return [];
+//     }
+
+//     let result = [];
+//     let queue = [root];
+
+//     while (queue.length > 0) {
+//         let currentNode = queue.shift();
+//         console.log(currentNode);
+//         result.push(currentNode.name);
+//         queue.push(...currentNode.children);
+//     }
+
+//     return result;
+// }
+
+function isLeaf(node) {
+    if (node.children.length == 0)
+        return true;
+    return false;
+}
+
+function findElder(children) {
+    let elder = children[0];
+    for (let child of children) {
+        if (child.dateOfBirth < elder.dateOfBirth)
+            elder = child;
+    }
+    return elder;
+}
+
+function getTeknonym(sex, elder) {
+    switch (sex) {
+        case 'm':
+            return `father of ${elder.name}`;
+        case 'f':
+            return `mother of ${elder.name}`;
+    }
+}
+
 function teknonymize(familyTree){
-    if (familyTree.children.length == 0) return;
+    if (isLeaf(familyTree)) return;
+    if (!isLeaf(familyTree)) {
+        let allLeafs = true;
+        for (let node of familyTree.children) {
+            if (!isLeaf(node)) {
+                allLeafs = false;
+            }
+        }
+        if (allLeafs) {
+            let elder = findElder(familyTree.children);
+            familyTree.teknonym = getTeknonym(familyTree.sex, elder);
+        }
+    }
 }
 
 let a = {
