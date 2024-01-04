@@ -1,3 +1,5 @@
+let sons = {};
+
 function isLeaf(node) {
     if (node.children.length == 0)
         return true;
@@ -23,19 +25,7 @@ function getTeknonym(sex, elder) {
             parentSex = 'mother';
             break;
     }
-    return `${parentSex} of ${elder.name};${elder.dateOfBirth}`;
-}
-
-function teknonymTrimDate(teknonym) {
-    let index = teknonym.indexOf(';');
-    if (index == -1) return teknonym;
-    return teknonym.slice(0, index);
-}
-
-function ageCompareTeknonyms(a, b) {
-    a = a.slice(a.indexOf(';')+1);
-    b = b.slice(b.indexOf(';')+1);
-    return a < b;
+    return `${parentSex} of ${elder.name}`;
 }
 
 function plusGeneration(sex, teknonym) {
@@ -67,21 +57,22 @@ function setTeknonym(node) {
         }
         if (allLeafs) {
             let elder = findElder(node.children);
-            node.teknonym = teknonymTrimDate(getTeknonym(node.sex, elder));
+            sons[elder.name] = elder.dateOfBirth;
+            node.teknonym = getTeknonym(node.sex, elder);
         } else {
             let elderTeknonym = '';
             for (let child of node.children) {
                 setTeknonym(child);
-                if (elderTeknonym != '' && child.teknonym != '' &&
-                ageCompareTeknonyms(child.teknonym, elderTeknonym)) {
+                if (child.teknonym != '' && elderTeknonym == '') {
                     elderTeknonym = child.teknonym;
-                    child.teknonym = teknonymTrimDate(child.teknonym);
-                } else if (elderTeknonym == '' && child.teknonym != '') {
-                    elderTeknonym = child.teknonym;
-                    child.teknonym = teknonymTrimDate(child.teknonym);
+                }
+                if (child.teknonym != '' && elderTeknonym != '') {
+                    let elderDate = sons[elderTeknonym.at(-1)];
+                    let childDate = sons[child.teknonym.at(-1)];
+                    if (childDate < elderDate)
+                        elderTeknonym = child.teknonym;
                 }
             }
-            elderTeknonym = teknonymTrimDate(elderTeknonym);
             node.teknonym = plusGeneration(node.sex, elderTeknonym);
         }
     }
@@ -90,7 +81,8 @@ function setTeknonym(node) {
 function teknonymize(familyTree){
     if (isLeaf(familyTree)) return;
     setTeknonym(familyTree);
-    familyTree.teknonym = teknonymTrimDate(familyTree.teknonym);
+    console.log(sons);
+    sons = [];
 }
 
 let a = {
@@ -191,153 +183,9 @@ let c = {
     'dateOfBirth': '1000-02-01T00:00:00.000Z'
 }
 
-let d = {
-    "name": "kmysxoex",
-    "teknonym": "",
-    "dateOfBirth": "1000-01-02T10:49:42.352Z",
-    "sex": "f",
-    "children": [
-        {
-            "name": "cexhomfj",
-            "teknonym": "",
-            "dateOfBirth": "1021-12-22T01:47:52.000Z",
-            "sex": "f",
-            "children": []
-        },
-        {
-            "name": "yjvscrfi",
-            "teknonym": "",
-            "dateOfBirth": "1022-03-22T01:47:53.000Z",
-            "sex": "f",
-            "children": []
-        },
-        {
-            "name": "imxpdlrc",
-            "teknonym": "",
-            "dateOfBirth": "1029-12-17T01:47:53.000Z",
-            "sex": "f",
-            "children": [
-                {
-                    "name": "jsfldtrz",
-                    "teknonym": "",
-                    "dateOfBirth": "1052-08-17T01:47:53.000Z",
-                    "sex": "f",
-                    "children": []
-                },
-                {
-                    "name": "yqiismjr",
-                    "teknonym": "",
-                    "dateOfBirth": "1056-10-06T01:47:53.000Z",
-                    "sex": "f",
-                    "children": [
-                        {
-                            "name": "qghanxyt",
-                            "teknonym": "",
-                            "dateOfBirth": "1079-01-18T01:47:53.000Z",
-                            "sex": "f",
-                            "children": []
-                        },
-                        {
-                            "name": "jwauqxgw",
-                            "teknonym": "",
-                            "dateOfBirth": "1079-12-23T01:47:53.000Z",
-                            "sex": "f",
-                            "children": [
-                                {
-                                    "name": "dtnrifge",
-                                    "teknonym": "",
-                                    "dateOfBirth": "1103-07-27T01:47:53.000Z",
-                                    "sex": "m",
-                                    "children": []
-                                },
-                                {
-                                    "name": "qoqzkvlo",
-                                    "teknonym": "",
-                                    "dateOfBirth": "1105-01-26T01:47:53.000Z",
-                                    "sex": "m",
-                                    "children": [
-                                        {
-                                            "name": "jrpebuvx",
-                                            "teknonym": "",
-                                            "dateOfBirth": "1128-10-20T01:47:53.000Z",
-                                            "sex": "m",
-                                            "children": []
-                                        },
-                                        {
-                                            "name": "czebbkmh",
-                                            "teknonym": "",
-                                            "dateOfBirth": "1126-11-27T01:47:53.000Z",
-                                            "sex": "f",
-                                            "children": [
-                                                {
-                                                    "name": "fgohicoh",
-                                                    "teknonym": "",
-                                                    "dateOfBirth": "1153-08-16T01:47:53.000Z",
-                                                    "sex": "f",
-                                                    "children": []
-                                                },
-                                                {
-                                                    "name": "hdkmsyxe",
-                                                    "teknonym": "",
-                                                    "dateOfBirth": "1156-11-14T01:47:53.000Z",
-                                                    "sex": "f",
-                                                    "children": []
-                                                },
-                                                {
-                                                    "name": "rgjfuool",
-                                                    "teknonym": "",
-                                                    "dateOfBirth": "1149-01-07T01:47:55.000Z",
-                                                    "sex": "m",
-                                                    "children": []
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                },
-                                {
-                                    "name": "lmnwooqi",
-                                    "teknonym": "",
-                                    "dateOfBirth": "1109-01-27T01:47:55.000Z",
-                                    "sex": "m",
-                                    "children": [
-                                        {
-                                            "name": "yxbpuaxo",
-                                            "teknonym": "",
-                                            "dateOfBirth": "1134-06-25T01:47:55.000Z",
-                                            "sex": "f",
-                                            "children": []
-                                        },
-                                        {
-                                            "name": "pycpxdsv",
-                                            "teknonym": "",
-                                            "dateOfBirth": "1132-01-20T01:47:55.000Z",
-                                            "sex": "f",
-                                            "children": []
-                                        },
-                                        {
-                                            "name": "rgrormht",
-                                            "teknonym": "",
-                                            "dateOfBirth": "1133-01-06T01:47:55.000Z",
-                                            "sex": "f",
-                                            "children": []
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "name": "yreknqxm",
-                    "teknonym": "",
-                    "dateOfBirth": "1056-03-20T01:47:55.000Z",
-                    "sex": "m",
-                    "children": []
-                }
-            ]
-        }
-    ]
-}
+let d = {"name":"mvfrzdcs","teknonym":"","dateOfBirth":"1000-01-02T13:10:11.606Z","sex":"f","children":[{"name":"kgywpkot","teknonym":"","dateOfBirth":"1022-06-28T10:21:06.000Z","sex":"f","children":[{"name":"ilflwyir","teknonym":"","dateOfBirth":"1045-06-23T10:21:07.000Z","sex":"m","children":[{"name":"tvrpdfsd","teknonym":"","dateOfBirth":"1066-11-13T10:21:07.000Z","sex":"m","children":[{"name":"jvcdragd","teknonym":"","dateOfBirth":"1089-12-15T10:21:07.000Z","sex":"f","children":[]},{"name":"njnlgrzc","teknonym":"","dateOfBirth":"1095-05-10T10:21:07.000Z","sex":"m","children":[]}]}]},{"name":"ocwgsfgd","teknonym":"","dateOfBirth":"1052-03-19T10:21:07.000Z","sex":"m","children":[{"name":"jiozcugk","teknonym":"","dateOfBirth":"1073-09-28T10:21:07.000Z","sex":"m","children":[{"name":"shdeyher","teknonym":"","dateOfBirth":"1102-03-17T10:21:07.000Z","sex":"f","children":[]},{"name":"lahsvmql","teknonym":"","dateOfBirth":"1102-04-11T10:21:07.000Z","sex":"f","children":[]}]},{"name":"ejbxwhta","teknonym":"","dateOfBirth":"1075-12-18T10:21:08.000Z","sex":"m","children":[{"name":"wwlrqwst","teknonym":"","dateOfBirth":"1096-08-14T10:21:08.000Z","sex":"m","children":[]}]}]}]},{"name":"ievdpjvu","teknonym":"","dateOfBirth":"1024-05-16T10:21:08.000Z","sex":"m","children":[{"name":"wqgoylzr","teknonym":"","dateOfBirth":"1049-06-04T10:21:08.000Z","sex":"m","children":[]}]}]}
+
+let dExpected = {"name":"mvfrzdcs","teknonym":"great-great-grandmother of jvcdragd","dateOfBirth":"1000-01-02T13:10:11.606Z","sex":"f","children":[{"name":"kgywpkot","teknonym":"great-grandmother of jvcdragd","dateOfBirth":"1022-06-28T10:21:06.000Z","sex":"f","children":[{"name":"ilflwyir","teknonym":"grandfather of jvcdragd","dateOfBirth":"1045-06-23T10:21:07.000Z","sex":"m","children":[{"name":"tvrpdfsd","teknonym":"father of jvcdragd","dateOfBirth":"1066-11-13T10:21:07.000Z","sex":"m","children":[{"name":"jvcdragd","teknonym":"","dateOfBirth":"1089-12-15T10:21:07.000Z","sex":"f","children":[]},{"name":"njnlgrzc","teknonym":"","dateOfBirth":"1095-05-10T10:21:07.000Z","sex":"m","children":[]}]}]},{"name":"ocwgsfgd","teknonym":"grandfather of wwlrqwst","dateOfBirth":"1052-03-19T10:21:07.000Z","sex":"m","children":[{"name":"jiozcugk","teknonym":"father of shdeyher","dateOfBirth":"1073-09-28T10:21:07.000Z","sex":"m","children":[{"name":"shdeyher","teknonym":"","dateOfBirth":"1102-03-17T10:21:07.000Z","sex":"f","children":[]},{"name":"lahsvmql","teknonym":"","dateOfBirth":"1102-04-11T10:21:07.000Z","sex":"f","children":[]}]},{"name":"ejbxwhta","teknonym":"father of wwlrqwst","dateOfBirth":"1075-12-18T10:21:08.000Z","sex":"m","children":[{"name":"wwlrqwst","teknonym":"","dateOfBirth":"1096-08-14T10:21:08.000Z","sex":"m","children":[]}]}]}]},{"name":"ievdpjvu","teknonym":"father of wqgoylzr","dateOfBirth":"1024-05-16T10:21:08.000Z","sex":"m","children":[{"name":"wqgoylzr","teknonym":"","dateOfBirth":"1049-06-04T10:21:08.000Z","sex":"m","children":[]}]}]};
 
 teknonymize(a);
 console.log(a);
@@ -347,6 +195,3 @@ teknonymize(c);
 console.log(c);
 // teknonymize(d);
 // console.log(d);
-
-console.log({"name":"eozeyxuz","teknonym":"great-grandmother of enucmkfk","dateOfBirth":"1000-01-02T11:01:53.648Z","sex":"f","children":[{"name":"ctuvzuut","teknonym":"","dateOfBirth":"1020-07-12T02:03:48.000Z","sex":"f","children":[]},{"name":"vxunuctr","teknonym":"grandmother of enucmkfk","dateOfBirth":"1026-04-15T02:03:48.000Z","sex":"f","children":[{"name":"ggyvfkhu","teknonym":"mother of enucmkfk","dateOfBirth":"1054-03-15T02:03:48.000Z","sex":"f","children":[{"name":"enucmkfk","teknonym":"","dateOfBirth":"1076-08-05T02:03:48.000Z","sex":"m","children":[]}]},{"name":"hjvmetlz","teknonym":"grandmother of mrnngaer","dateOfBirth":"1055-06-20T02:03:48.000Z","sex":"f","children":[{"name":"jexobnit","teknonym":"","dateOfBirth":"1078-08-04T02:03:48.000Z","sex":"f","children":[]},{"name":"ypebhonu","teknonym":"father of mrnngaer","dateOfBirth":"1077-06-09T02:03:49.000Z","sex":"m","children":[{"name":"gvwuehrn","teknonym":"","dateOfBirth":"1104-10-05T02:03:49.000Z","sex":"m","children":[]},{"name":"mrnngaer","teknonym":"","dateOfBirth":"1099-03-28T02:03:50.000Z","sex":"f","children":[]}]}]}]}]});
-console.log({"name":"eozeyxuz","teknonym":"great-great-grandmother of mrnngaer","dateOfBirth":"1000-01-02T11:01:53.648Z","sex":"f","children":[{"name":"ctuvzuut","teknonym":"","dateOfBirth":"1020-07-12T02:03:48.000Z","sex":"f","children":[]},{"name":"vxunuctr","teknonym":"great-grandmother of mrnngaer","dateOfBirth":"1026-04-15T02:03:48.000Z","sex":"f","children":[{"name":"ggyvfkhu","teknonym":"mother of enucmkfk","dateOfBirth":"1054-03-15T02:03:48.000Z","sex":"f","children":[{"name":"enucmkfk","teknonym":"","dateOfBirth":"1076-08-05T02:03:48.000Z","sex":"m","children":[]}]},{"name":"hjvmetlz","teknonym":"grandmother of mrnngaer","dateOfBirth":"1055-06-20T02:03:48.000Z","sex":"f","children":[{"name":"jexobnit","teknonym":"","dateOfBirth":"1078-08-04T02:03:48.000Z","sex":"f","children":[]},{"name":"ypebhonu","teknonym":"father of mrnngaer","dateOfBirth":"1077-06-09T02:03:49.000Z","sex":"m","children":[{"name":"gvwuehrn","teknonym":"","dateOfBirth":"1104-10-05T02:03:49.000Z","sex":"m","children":[]},{"name":"mrnngaer","teknonym":"","dateOfBirth":"1099-03-28T02:03:50.000Z","sex":"f","children":[]}]}]}]}]});
