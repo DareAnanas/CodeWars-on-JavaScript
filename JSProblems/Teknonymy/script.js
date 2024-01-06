@@ -9,7 +9,7 @@ function isLeaf(node) {
 function findElder(children) {
     let elder = children[0];
     for (let child of children) {
-        if (child.dateOfBirth < elder.dateOfBirth)
+        if (new Date(child.dateOfBirth) < new Date(elder.dateOfBirth))
             elder = child;
     }
     return elder;
@@ -69,7 +69,7 @@ function setTeknonym(node) {
                 if (child.teknonym != '' && elderTeknonym != '') {
                     let elderDate = sons[elderTeknonym.at(-1)];
                     let childDate = sons[child.teknonym.at(-1)];
-                    if (childDate < elderDate)
+                    if (new Date(childDate) < new Date(elderDate))
                         elderTeknonym = child.teknonym;
                 }
             }
@@ -81,7 +81,7 @@ function setTeknonym(node) {
 function teknonymize(familyTree){
     if (isLeaf(familyTree)) return;
     setTeknonym(familyTree);
-    console.log(sons);
+    // console.log(sons);
     sons = [];
 }
 
@@ -183,9 +183,9 @@ let c = {
     'dateOfBirth': '1000-02-01T00:00:00.000Z'
 }
 
-let d = {"name":"mvfrzdcs","teknonym":"","dateOfBirth":"1000-01-02T13:10:11.606Z","sex":"f","children":[{"name":"kgywpkot","teknonym":"","dateOfBirth":"1022-06-28T10:21:06.000Z","sex":"f","children":[{"name":"ilflwyir","teknonym":"","dateOfBirth":"1045-06-23T10:21:07.000Z","sex":"m","children":[{"name":"tvrpdfsd","teknonym":"","dateOfBirth":"1066-11-13T10:21:07.000Z","sex":"m","children":[{"name":"jvcdragd","teknonym":"","dateOfBirth":"1089-12-15T10:21:07.000Z","sex":"f","children":[]},{"name":"njnlgrzc","teknonym":"","dateOfBirth":"1095-05-10T10:21:07.000Z","sex":"m","children":[]}]}]},{"name":"ocwgsfgd","teknonym":"","dateOfBirth":"1052-03-19T10:21:07.000Z","sex":"m","children":[{"name":"jiozcugk","teknonym":"","dateOfBirth":"1073-09-28T10:21:07.000Z","sex":"m","children":[{"name":"shdeyher","teknonym":"","dateOfBirth":"1102-03-17T10:21:07.000Z","sex":"f","children":[]},{"name":"lahsvmql","teknonym":"","dateOfBirth":"1102-04-11T10:21:07.000Z","sex":"f","children":[]}]},{"name":"ejbxwhta","teknonym":"","dateOfBirth":"1075-12-18T10:21:08.000Z","sex":"m","children":[{"name":"wwlrqwst","teknonym":"","dateOfBirth":"1096-08-14T10:21:08.000Z","sex":"m","children":[]}]}]}]},{"name":"ievdpjvu","teknonym":"","dateOfBirth":"1024-05-16T10:21:08.000Z","sex":"m","children":[{"name":"wqgoylzr","teknonym":"","dateOfBirth":"1049-06-04T10:21:08.000Z","sex":"m","children":[]}]}]}
+let d = {"name":"sawlhrky","teknonym":"","dateOfBirth":"1000-01-06T09:22:27.836Z","sex":"f","children":[{"name":"ionoxwrg","teknonym":"","dateOfBirth":"1029-10-26T22:40:56.000Z","sex":"m","children":[]},{"name":"rzpxhhuo","teknonym":"","dateOfBirth":"1023-10-26T22:40:56.000Z","sex":"f","children":[{"name":"fsdwknqq","teknonym":"","dateOfBirth":"1047-02-17T22:40:56.000Z","sex":"m","children":[{"name":"gsxsopsy","teknonym":"","dateOfBirth":"1077-10-06T22:40:56.000Z","sex":"f","children":[]}]},{"name":"weqryurd","teknonym":"","dateOfBirth":"1046-08-06T22:40:56.000Z","sex":"f","children":[{"name":"wdmhlxkw","teknonym":"","dateOfBirth":"1073-04-19T22:40:57.000Z","sex":"m","children":[]},{"name":"vbdsstvm","teknonym":"","dateOfBirth":"1074-03-20T22:40:57.000Z","sex":"m","children":[{"name":"nivcmjjw","teknonym":"","dateOfBirth":"1094-11-06T22:40:57.000Z","sex":"m","children":[]},{"name":"ozeisodz","teknonym":"","dateOfBirth":"1095-08-17T22:40:57.000Z","sex":"f","children":[]}]}]}]}]}
+console.log(d);
 
-let dExpected = {"name":"mvfrzdcs","teknonym":"great-great-grandmother of jvcdragd","dateOfBirth":"1000-01-02T13:10:11.606Z","sex":"f","children":[{"name":"kgywpkot","teknonym":"great-grandmother of jvcdragd","dateOfBirth":"1022-06-28T10:21:06.000Z","sex":"f","children":[{"name":"ilflwyir","teknonym":"grandfather of jvcdragd","dateOfBirth":"1045-06-23T10:21:07.000Z","sex":"m","children":[{"name":"tvrpdfsd","teknonym":"father of jvcdragd","dateOfBirth":"1066-11-13T10:21:07.000Z","sex":"m","children":[{"name":"jvcdragd","teknonym":"","dateOfBirth":"1089-12-15T10:21:07.000Z","sex":"f","children":[]},{"name":"njnlgrzc","teknonym":"","dateOfBirth":"1095-05-10T10:21:07.000Z","sex":"m","children":[]}]}]},{"name":"ocwgsfgd","teknonym":"grandfather of wwlrqwst","dateOfBirth":"1052-03-19T10:21:07.000Z","sex":"m","children":[{"name":"jiozcugk","teknonym":"father of shdeyher","dateOfBirth":"1073-09-28T10:21:07.000Z","sex":"m","children":[{"name":"shdeyher","teknonym":"","dateOfBirth":"1102-03-17T10:21:07.000Z","sex":"f","children":[]},{"name":"lahsvmql","teknonym":"","dateOfBirth":"1102-04-11T10:21:07.000Z","sex":"f","children":[]}]},{"name":"ejbxwhta","teknonym":"father of wwlrqwst","dateOfBirth":"1075-12-18T10:21:08.000Z","sex":"m","children":[{"name":"wwlrqwst","teknonym":"","dateOfBirth":"1096-08-14T10:21:08.000Z","sex":"m","children":[]}]}]}]},{"name":"ievdpjvu","teknonym":"father of wqgoylzr","dateOfBirth":"1024-05-16T10:21:08.000Z","sex":"m","children":[{"name":"wqgoylzr","teknonym":"","dateOfBirth":"1049-06-04T10:21:08.000Z","sex":"m","children":[]}]}]};
 
 teknonymize(a);
 console.log(a);
@@ -193,5 +193,5 @@ teknonymize(b);
 console.log(b);
 teknonymize(c);
 console.log(c);
-// teknonymize(d);
-// console.log(d);
+teknonymize(d);
+console.log(d);
