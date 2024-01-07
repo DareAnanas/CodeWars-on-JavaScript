@@ -135,18 +135,18 @@ let maze1 = `.W.
 .W.
 ...`;
 
-let maze2 = `.W....
-WWW...
-...W.W
-.W.WWW
-.W....
-......`;
+// let maze2 = `.W....
+// WWW...
+// ...W.W
+// .W.WWW
+// .W....
+// ......`;
 
-let maze3 = `..W.
-.W..
-...W
-.W..`;
+// let maze3 = `..W.
+// .W..
+// ...W
+// .W..`;
 
 console.log(pathFinder(maze1));
-console.log(pathFinder(maze2));
-console.log(pathFinder(maze3));
+// console.log(pathFinder(maze2));
+// console.log(pathFinder(maze3));
