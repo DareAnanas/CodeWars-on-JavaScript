@@ -1,12 +1,13 @@
+// cardinal directions
 const NORTH = 0;
 const EAST = 1;
 const SOUTH = 2;
 const WEST = 3;
-
+// local directions
 const FORWARD = 0;
-const LEFT = 1;
-const RIGHT = 2;
-const BACK = 3;
+const LEFT = 3;
+const RIGHT = 1;
+const BACK = 2;
 
 class Turtle {
     maze;
