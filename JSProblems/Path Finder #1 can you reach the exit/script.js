@@ -16,7 +16,10 @@ class Turtle {
     startingY;
     x;
     y;
+    startTouchCount = 0;
     hasLeftStart = false;
+    hasUsedLeftWay = false;
+    hasUsedRightWay = false;
     facing;
 
     constructor(maze, startingX = 0, startingY = 0, facing = EAST) {
@@ -42,10 +45,23 @@ class Turtle {
     }
 
     isReturnedToStart() {
+        if (this.startTouchCount > DIRECTION_COUNT)
+            return true;
+        if (this.x == this.startingX &&
+            this.y == this.startingY)
+            this.startTouchCount++;
         if (this.x == this.startingX &&
             this.y == this.startingY &&
-            this.hasLeftStart)
+            this.hasLeftStart &&
+            this.hasUsedLeftWay &&
+            this.hasUsedRightWay)
             return true;
+        if (this.x == this.startingX + 1 &&
+            this.y == this.startingY)
+            this.hasUsedLeftWay = true;
+        if (this.x == this.startingX &&
+            this.y == this.startingY + 1)
+            this.hasUsedRightWay = true;
         return false;
     }
 
@@ -116,7 +132,10 @@ function toMatrixMaze(maze) {
 function pathFinder(maze){
     maze = toMatrixMaze(maze);
     let turtle = new Turtle(maze, 0, 0);
+    let rightTurnsCount = 0;
     while (true) {
+        if (rightTurnsCount > DIRECTION_COUNT)
+            return false;
         if (turtle.isInFinish())
         return true;
         if (turtle.isReturnedToStart())
@@ -125,9 +144,12 @@ function pathFinder(maze){
             turtle.turnLeft();
         if (turtle.isFreeWay(FORWARD)) {
             turtle.forward();
+            rightTurnsCount = 0;
         }
-        else
+        else {
             turtle.turnRight();
+            rightTurnsCount++;
+        }    
     }
 }
 
@@ -135,18 +157,18 @@ let maze1 = `.W.
 .W.
 ...`;
 
-// let maze2 = `.W....
-// WWW...
-// ...W.W
-// .W.WWW
-// .W....
-// ......`;
+let maze2 = `.W....
+WWW...
+...W.W
+.W.WWW
+.W....
+......`;
 
-// let maze3 = `..W.
-// .W..
-// ...W
-// .W..`;
+let maze3 = `..W.
+.W..
+...W
+.W..`;
 
 console.log(pathFinder(maze1));
-// console.log(pathFinder(maze2));
-// console.log(pathFinder(maze3));
+console.log(pathFinder(maze2));
+console.log(pathFinder(maze3));
