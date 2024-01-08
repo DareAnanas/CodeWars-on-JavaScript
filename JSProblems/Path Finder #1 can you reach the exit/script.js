@@ -132,24 +132,18 @@ function toMatrixMaze(maze) {
 function pathFinder(maze){
     maze = toMatrixMaze(maze);
     let turtle = new Turtle(maze, 0, 0);
-    let rightTurnsCount = 0;
     while (true) {
-        if (rightTurnsCount > DIRECTION_COUNT)
-            return false;
         if (turtle.isInFinish())
-        return true;
+            return true;
         if (turtle.isReturnedToStart())
             return false;
         if (turtle.isFreeWay(LEFT))
             turtle.turnLeft();
         if (turtle.isFreeWay(FORWARD)) {
             turtle.forward();
-            rightTurnsCount = 0;
         }
-        else {
-            turtle.turnRight();
-            rightTurnsCount++;
-        }    
+        else
+            turtle.turnRight();   
     }
 }
 
