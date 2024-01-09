@@ -44,24 +44,40 @@ class Turtle {
         return false;
     }
 
-    isReturnedToStart() {
-        if (this.startTouchCount > DIRECTION_COUNT)
-            return true;
-        if (this.x == this.startingX &&
-            this.y == this.startingY)
+    isCycled() {
+        return this.startTouchCount > DIRECTION_COUNT;
+    }
+
+    hasTouchedStart() {
+        return this.x == this.startingX && this.y == this.startingY;
+    }
+
+    checkLeftWay() {
+        return this.x == this.startingX + 1 && this.y == this.startingY;
+    }
+
+    checkLeftWay() {
+        return this.x == this.startingX && this.y == this.startingY + 1;
+    }
+
+    setTurtleWayFlags() {
+        if (this.hasTouchedStart())
             this.startTouchCount++;
-        if (this.x == this.startingX &&
-            this.y == this.startingY &&
+        if (this.checkLeftWay())
+            this.hasUsedLeftWay = true;
+        if (this.checkLeftWay())
+            this.hasUsedRightWay = true;
+    }
+
+    isReturnedToStart() {
+        if (this.isCycled())
+            return true;
+        if (this.hasTouchedStart() &&
             this.hasLeftStart &&
             this.hasUsedLeftWay &&
             this.hasUsedRightWay)
             return true;
-        if (this.x == this.startingX + 1 &&
-            this.y == this.startingY)
-            this.hasUsedLeftWay = true;
-        if (this.x == this.startingX &&
-            this.y == this.startingY + 1)
-            this.hasUsedRightWay = true;
+        this.setTurtleWayFlags();
         return false;
     }
 
@@ -69,26 +85,24 @@ class Turtle {
         return (localDirection + this.facing) % DIRECTION_COUNT;
     }
 
-    isFreeWay(localDirection) {
+    getXYModifier(localDirection) {
         let cardinalDirection = this.localToCardinal(localDirection);
         switch (cardinalDirection) {
             case NORTH:
-                if (this.getCellValue(this.x, this.y - 1) == '.')
-                    return true;
-                break;
+                return [0, -1];
             case EAST:
-                if (this.getCellValue(this.x + 1, this.y) == '.')
-                    return true;
-                break;
+                return [1, 0];
             case SOUTH:
-                if (this.getCellValue(this.x, this.y + 1) == '.')
-                    return true;
-                break;
+                return [0, 1];
             case WEST:
-                if (this.getCellValue(this.x - 1, this.y) == '.')
-                    return true;
-                break;
+                return [-1, 0];
         }
+    }
+
+    isFreeWay(localDirection) {
+        let [modifierX, modifierY] = this.getXYModifier(localDirection);
+        if (this.getCellValue(this.x + modifierX, this.y + modifierY) == '.')
+            return true;
         return false;
     }
 
@@ -103,21 +117,9 @@ class Turtle {
     forward() {
         if (!this.hasLeftStart)
             this.hasLeftStart = true;
-        let cardinalDirection = this.localToCardinal(FORWARD);
-        switch (cardinalDirection) {
-            case NORTH:
-                this.y -= 1;
-                break;
-            case EAST:
-                this.x += 1;
-                break;
-            case SOUTH:
-                this.y += 1;
-                break;
-            case WEST:
-                this.x -= 1;
-                break;
-        }
+        let [modifierX, modifierY] = this.getXYModifier(FORWARD);
+        this.x = this.x + modifierX;
+        this.y = this.y + modifierY;
     }
 }
 
