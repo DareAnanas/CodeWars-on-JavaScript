@@ -29,11 +29,18 @@ function test() {
     actual = cluesManager.generateCombinations();
     console.log(actual);
 
-    let clues3 = [
+    let clues31 = [
         3, 0, 0, 0,
         0, 0, 3, 0,
         2, 0, 2, 0,
         0, 0, 3, 0
+    ];
+
+    let clues3 = [
+        1, 0, 0, 3,
+        0, 3, 0, 0,
+        0, 0, 2, 0,
+        3, 0, 0, 0
     ];
 
     cluesManager.clues = clues3;
@@ -42,6 +49,7 @@ function test() {
     let combinationsManager = new CombinationsManager(actual);
     combinationsManager.updateCellVariants();
     combinationsManager.updateCombinations();
+
     console.log(combinationsManager.combinations);
     console.log(combinationsManager.cellVariants);
 }
@@ -67,24 +75,27 @@ class CombinationsManager {
     }
 
     updateColCombinations() {
-        // this.combinations.cols[this.pointer.getCol()].forEach((e, i) => {
-        //     if (!this.cellVariants[this.pointer.y][this.pointer.x].includes(e[this.pointer.getRow()])) {
-        //         this.combinations.cols[this.pointer.getCol()].deleteElement(i);
-        //     }
-        // });
-        // for (let i = 0; i < this.combinations.cols[this.pointer.getCol()].length; i++) {
-        //     let e = this.combinations.cols[this.pointer.getCol()][i];
-        //     if (!this.cellVariants[this.pointer.y][this.pointer.x].includes(e[this.pointer.getRow()])) {
-        //         this.combinations.cols[this.pointer.getCol()].deleteElement(i);
-        //     }
-        // }
+        let currentColVariants = this.combinations.cols[this.pointer.getCol()];
+        for (let i = 0; i < currentColVariants.length; i++) {
+            let e = currentColVariants[i];
+            let currentColPosition = e[this.pointer.getRow()];
+            let currentCellVariant = this.cellVariants[this.pointer.y][this.pointer.x];
+            if (!currentCellVariant.includes(currentColPosition)) {
+                this.combinations.cols[this.pointer.getCol()].deleteElement(i);
+                i--;
+            }
+        }
     }
 
     updateRowCombinations() {
-        for (let i = 0; i < this.combinations.rows[this.pointer.getRow()].length; i++) {
-            let e = this.combinations.rows[this.pointer.getRow()][i];
-            if (!this.cellVariants[this.pointer.y][this.pointer.x].includes(e[this.pointer.getCol()])) {
+        let currentRowVariants = this.combinations.rows[this.pointer.getRow()];
+        for (let i = 0; i < currentRowVariants.length; i++) {
+            let e = currentRowVariants[i];
+            let currentRowPosition = e[this.pointer.getCol()];
+            let currentCellVariant = this.cellVariants[this.pointer.y][this.pointer.x];
+            if (!currentCellVariant.includes(currentRowPosition)) {
                 this.combinations.rows[this.pointer.getRow()].deleteElement(i);
+                i--;
             }
         }
     }
