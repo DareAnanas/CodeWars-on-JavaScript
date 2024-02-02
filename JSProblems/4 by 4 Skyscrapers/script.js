@@ -5,7 +5,7 @@ Array.prototype.deleteElement = function(index) {
 }
 
 function test() {
-    let cluesArray = [
+    let normalCluesArray = [
         [
             1, 2, 4, 3,
             3, 2, 1, 2,
@@ -49,23 +49,80 @@ function test() {
             0, 0, 0, 0
         ],
         [
+            0, 0, 0, 3,
+            0, 3, 0, 0,
+            0, 3, 0, 2,
+            3, 0, 0, 0
+        ],
+        
+        [
+            0, 4, 0, 0,
+            0, 0, 0, 2,
+            0, 2, 0, 0,
+            0, 0, 0, 2
+        ],
+        [
+            0, 0, 0, 0,
+            0, 0, 0, 0,
+            0, 0, 0, 0,
+            3, 0, 1, 4
+        ],
+        [
+            3, 3, 0, 0,
+            0, 0, 2, 0,
+            0, 2, 0, 0,
+            0, 0, 0, 3
+        ],
+        [
+            0, 0, 0, 0,
+            0, 4, 2, 0,
+            0, 1, 0, 2,
+            0, 0, 0, 0
+        ],
+    ];
+
+    let notSolvedOneSizeCluesArray = [
+        [
             0, 2, 2, 0,
             0, 0, 0, 0,
             3, 1, 0, 0,
             0, 0, 0, 3
+        ],
+        [
+            3, 0, 0, 0,
+            0, 2, 3, 0,
+            0, 2, 0, 0,
+            0, 0, 0, 2
+        ],
+        [
+            0, 2, 0, 0,
+            0, 2, 0, 0,
+            0, 0, 0, 3,
+            3, 3, 0, 0
+        ],
+        [
+            2, 0, 2, 0,
+            0, 0, 3, 0,
+            0, 0, 3, 0,
+            0, 0, 2, 2
+        ],
+        [
+            0, 0, 0, 0,
+            0, 2, 2, 0,
+            0, 0, 0, 0,
+            1, 3, 0, 3
         ]
-    ];
+    ]
     
-    for (let clues of cluesArray) {
+    for (let clues of notSolvedOneSizeCluesArray) {
         let cluesManager = new CluesManager(clues);
         let combinations = cluesManager.generateCombinations();
-        console.log(combinations);
+        // console.log(combinations);
         let combinationsManager = new CombinationsManager(combinations);
-        for (let i = 0; i < 5; i++) {
+        do {
             combinationsManager.updateCellVariants();
             combinationsManager.updateCombinations();
-            console.log('Is repeating: ', combinationsManager.isRepeatingCellVariants());
-        }
+        } while (!combinationsManager.isRepeatingCellVariants());
         console.log(combinationsManager.combinations);
         console.log(combinationsManager.cellVariants);
     }
