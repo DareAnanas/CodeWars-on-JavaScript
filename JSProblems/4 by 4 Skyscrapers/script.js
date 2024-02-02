@@ -5,57 +5,78 @@ Array.prototype.deleteElement = function(index) {
 }
 
 function test() {
-    let clues1 = [
-        1, 2, 4, 3,
-        3, 2, 1, 2,
-        2, 1, 2, 2,
-        2, 3, 2, 1
+    let cluesArray = [
+        [
+            1, 2, 4, 3,
+            3, 2, 1, 2,
+            2, 1, 2, 2,
+            2, 3, 2, 1
+        ],
+        [
+            0, 0, 1, 2,
+            0, 2, 0, 0,
+            0, 3, 0, 0,
+            0, 1, 0, 0
+        ],
+        [
+            3, 0, 0, 0,
+            0, 0, 3, 0,
+            2, 0, 2, 0,
+            0, 0, 3, 0
+        ],
+        [
+            1, 0, 0, 3,
+            0, 3, 0, 0,
+            0, 0, 2, 0,
+            3, 0, 0, 0
+        ],
+        [
+            0, 0, 2, 0,
+            0, 2, 0, 0,
+            0, 0, 3, 0,
+            1, 0, 0, 3
+        ],
+        [
+            0, 0, 0, 0,
+            3, 0, 0, 0,
+            0, 0, 2, 3,
+            3, 0, 2, 0  
+        ],
+        [
+            2, 2, 0, 0,
+            0, 0, 4, 0,
+            0, 2, 0, 0,
+            0, 0, 0, 0
+        ],
+        [
+            0, 2, 2, 0,
+            0, 0, 0, 0,
+            3, 1, 0, 0,
+            0, 0, 0, 3
+        ]
     ];
+    
+    for (let clues of cluesArray) {
+        let cluesManager = new CluesManager(clues);
+        let combinations = cluesManager.generateCombinations();
+        console.log(combinations);
+        let combinationsManager = new CombinationsManager(combinations);
+        for (let i = 0; i < 5; i++) {
+            combinationsManager.updateCellVariants();
+            combinationsManager.updateCombinations();
+            console.log('Is repeating: ', combinationsManager.isRepeatingCellVariants());
+        }
+        console.log(combinationsManager.combinations);
+        console.log(combinationsManager.cellVariants);
+    }
+    
 
-    let cluesManager = new CluesManager(clues1);
-    let actual = cluesManager.generateCombinations();
-    console.log(actual);
-    // let combinationsManager = new CombinationsManager(actual);
-    // combinationsManager.updateCellVariants();
-
-    let clues2 = [
-        0, 0, 1, 2,
-        0, 2, 0, 0,
-        0, 3, 0, 0,
-        0, 1, 0, 0
-    ];
-
-    cluesManager.clues = clues2;
-    actual = cluesManager.generateCombinations();
-    console.log(actual);
-
-    let clues31 = [
-        3, 0, 0, 0,
-        0, 0, 3, 0,
-        2, 0, 2, 0,
-        0, 0, 3, 0
-    ];
-
-    let clues3 = [
-        1, 0, 0, 3,
-        0, 3, 0, 0,
-        0, 0, 2, 0,
-        3, 0, 0, 0
-    ];
-
-    cluesManager.clues = clues3;
-    actual = cluesManager.generateCombinations();
-    console.log(actual);
-    let combinationsManager = new CombinationsManager(actual);
-    combinationsManager.updateCellVariants();
-    combinationsManager.updateCombinations();
-
-    console.log(combinationsManager.combinations);
-    console.log(combinationsManager.cellVariants);
+    
 }
 
 class CombinationsManager {
     combinations;
+    previosCellVariants;
     cellVariants;
     pointer;
 
@@ -100,7 +121,15 @@ class CombinationsManager {
         }
     }
 
+    isRepeatingCellVariants() {
+        if (this.previosCellVariants.toString() == this.cellVariants.toString()) {
+            return true;
+        }
+        return false;
+    }
+
     updateCellVariants() {
+        this.previosCellVariants = ArrayUtils.copyMatrix(this.cellVariants);
         this.pointer.init();
         while (!this.pointer.end) {
             let possibleCellVariantByCol = this.getPossibleCellVariantByCol();
@@ -144,6 +173,14 @@ class ArrayUtils {
         let result = [];
         for (let i = 0; i < m; i++) {
             result.push(new Array(n));
+        }
+        return result;
+    }
+
+    static copyMatrix(matrix) {
+        let result = [];
+        for (let y = 0; y < matrix.length; y++) {
+            result.push([...matrix[y]]);
         }
         return result;
     }
