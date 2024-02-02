@@ -113,8 +113,9 @@ function test() {
             1, 3, 0, 3
         ]
     ]
-    
-    for (let clues of notSolvedOneSizeCluesArray) {
+
+    function solvePuzzle(clues) {
+        
         let cluesManager = new CluesManager(clues);
         let combinations = cluesManager.generateCombinations();
         // console.log(combinations);
@@ -123,11 +124,18 @@ function test() {
             combinationsManager.updateCellVariants();
             combinationsManager.updateCombinations();
         } while (!combinationsManager.isRepeatingCellVariants());
+        if (combinationsManager.checkIfPuzzleSolved()) {
+            return true;
+        }
+        
         console.log(combinationsManager.combinations);
         console.log(combinationsManager.cellVariants);
+        
     }
-    
 
+    for (let clues of normalCluesArray) {
+        console.log(solvePuzzle(clues));
+    }
     
 }
 
@@ -141,6 +149,20 @@ class CombinationsManager {
         this.combinations = combinations;
         this.cellVariants = ArrayUtils.createMatrix(4, 4);
         this.pointer = new Pointer();
+    }
+
+    checkIfPuzzleSolved() {
+        for (let col of this.combinations.cols) {
+            if (col.length != 1) {
+                return false;
+            }
+        }
+        for (let row of this.combinations.rows) {
+            if (row.length != 1) {
+                return false;
+            }
+        }
+        return true;
     }
 
     updateCombinations() {
