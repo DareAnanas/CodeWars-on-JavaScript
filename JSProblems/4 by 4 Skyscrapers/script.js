@@ -127,7 +127,8 @@ function test() {
         if (combinationsManager.checkIfPuzzleSolved()) {
             return true;
         }
-        
+        combinationsManager.goThroughFinalVariants();
+
         console.log(combinationsManager.combinations);
         console.log(combinationsManager.cellVariants);
         
@@ -149,6 +150,40 @@ class CombinationsManager {
         this.combinations = combinations;
         this.cellVariants = ArrayUtils.createMatrix(4, 4);
         this.pointer = new Pointer();
+    }
+
+    goThroughFinalVariants() {
+        for (let variantsSize = 2; variantsSize < 24; variantsSize++) {
+            let index = this.findIndexOfArrayWithSize(variantsSize);
+            if (index != -1) {
+                this.goThroughAllVariants(index);
+                break;
+            }
+        }
+    }
+
+    findIndexOfArrayWithSize(size) {
+        for (let i = 0; i < this.combinations.cols.length; i++) {
+            if (this.combinations.cols[i].length == size) {
+                return {axis: 'cols', i: i};
+            }
+        }
+        for (let i = 0; i < this.combinations.rows.length; i++) {
+            if (this.combinations.rows[i].length == size) {
+                return {axis: 'rows', i: i};
+            }
+        }
+        return -1;
+    }
+
+    goThroughAllVariants(index) {
+        let combinations = this.copyCombinations();
+        console.log('Copied combinations: ' ,combinations);
+        console.log('Found: ', this.combinations[index.axis][index.i]);
+    }
+
+    copyCombinations() {
+        return JSON.parse(JSON.stringify(this.combinations));
     }
 
     checkIfPuzzleSolved() {

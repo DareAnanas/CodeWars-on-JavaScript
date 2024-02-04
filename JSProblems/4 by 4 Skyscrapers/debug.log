@@ -4,3 +4,5 @@
 [0201/102931.396:ERROR:check.cc(297)] Check failed: false. NOTREACHED log messages are omitted in official builds. Sorry!
 [0201/144826.221:ERROR:check.cc(297)] Check failed: false. NOTREACHED log messages are omitted in official builds. Sorry!
 [0202/094325.072:ERROR:check.cc(297)] Check failed: false. NOTREACHED log messages are omitted in official builds. Sorry!
+[0204/151211.450:ERROR:check.cc(297)] Check failed: false. NOTREACHED log messages are omitted in official builds. Sorry!
+[0204/183313.785:ERROR:check.cc(297)] Check failed: false. NOTREACHED log messages are omitted in official builds. Sorry!
