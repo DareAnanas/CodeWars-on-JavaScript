@@ -177,13 +177,41 @@ class CombinationsManager {
     }
 
     goThroughAllVariants(index) {
-        let combinations = this.copyCombinations();
-        console.log('Copied combinations: ' ,combinations);
-        console.log('Found: ', this.combinations[index.axis][index.i]);
+        for (let i = 0; i < this.combinations[index.axis][index.i].length; i++) {
+            let combinations = this.copyCombinations(index, i);
+            let combinationsManager = new CombinationsManager(combinations);
+            do {
+                combinationsManager.updateCellVariants();
+                combinationsManager.updateCombinations();
+            } while (!combinationsManager.isRepeatingCellVariants());
+            console.log(combinationsManager.cellVariants);
+        } 
     }
 
-    copyCombinations() {
-        return JSON.parse(JSON.stringify(this.combinations));
+    copyCombinations(index, j) {
+        let copiedCombinations = {
+            cols: [[],[],[],[]], 
+            rows: [[],[],[],[]]
+        };
+        for (let i = 0; i < this.combinations.cols.length; i++) {
+            if (index.axis == 'cols' && index.i == i) {
+                copiedCombinations.cols[i].push(this.combinations.cols[i][j]);
+            } else {
+                for (let e of this.combinations.cols[i]) {
+                    copiedCombinations.cols[i].push(e);
+                }                
+            }
+        }
+        for (let i = 0; i < this.combinations.rows.length; i++) {
+            if (index.axis == 'rows' && index.i == i) {
+                copiedCombinations.rows[i].push(this.combinations.rows[i][j]);
+            } else {
+                for (let e of this.combinations.rows[i]) {
+                    copiedCombinations.rows[i].push(e);
+                }                
+            }
+        }
+        return copiedCombinations;
     }
 
     checkIfPuzzleSolved() {
