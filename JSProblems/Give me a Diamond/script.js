@@ -1,7 +1,7 @@
 function generateTopHalf(n) {
     const diamondWidth = 2*n-1;
     let diamond = '';
-    for (let i = 1; i <= diamondWidth - 2; i+=2) {
+    for (let i = 1; i <= diamondWidth; i+=2) {
         const spaceWidth = (diamondWidth - i) / 2;
         let layer = ' '.repeat(spaceWidth) +
                     '*'.repeat(i);
@@ -22,16 +22,35 @@ function generateBottomHalf(n) {
     return diamond;
 }
 
-function diamond(n) {
-    const diamondWidth = 2*n-1;
-    let diamond = '';
-    for (let i = 1; i <= diamondWidth; i+=2) {
-        const spaceWidth = (diamondWidth - i) / 2;
-        let layer = ' '.repeat(spaceWidth) +
-                    '*'.repeat(i);
-        diamond += layer + '\n';
+function * diamondWidthGenerator(n) {
+    let reachedMaximum = false;
+    let numberOfAsterisks = 1;
+    for (let i = 0; i < n; i++) {
+        yield numberOfAsterisks;
+        if (!reachedMaximum && numberOfAsterisks == n) {
+            reachedMaximum = true;
+        }
+        if (!reachedMaximum)
+            numberOfAsterisks += 2;
+        else
+            numberOfAsterisks -= 2;
     }
-    return diamond;
+}
+
+function diamond(n) {
+    let reachedMaximum = false;
+    let numberOfAsterisks = 1;
+    for (let i = 0; i < n; i++) {
+        // used numberOfAsterisks
+        console.log(numberOfAsterisks);
+        if (!reachedMaximum && numberOfAsterisks == n) {
+            reachedMaximum = true;
+        }
+        if (!reachedMaximum)
+            numberOfAsterisks += 2;
+        else
+            numberOfAsterisks -= 2;
+    }
 }
 
 function chaiTest() {
@@ -44,8 +63,8 @@ function chaiTest() {
 }
 
 function main() {
-    chaiTest();
-    console.log(generateTopHalf(3));
+    // chaiTest();
+    console.log(diamond(5));
 }
 
 main();
