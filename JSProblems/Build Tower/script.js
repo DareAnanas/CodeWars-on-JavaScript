@@ -21,7 +21,7 @@ function chaiTest() {
 
 function main() {
     chaiTest();
-    buildTower(1);
+    console.log(buildTower(1));
 }
 
 main();
